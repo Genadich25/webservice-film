@@ -1,6 +1,7 @@
 package com.webservicewithapi.webservicefilm.services.Movie;
 
 import com.webservicewithapi.webservicefilm.WebserviceFilmApplication;
+import com.webservicewithapi.webservicefilm.exceptions.PageNotExistException;
 import com.webservicewithapi.webservicefilm.models.BaseResult;
 import com.webservicewithapi.webservicefilm.models.Movie;
 import com.webservicewithapi.webservicefilm.repositories.MovieRepository;
@@ -37,12 +38,17 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> getMovieByPages(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        return movieRepository.findAll(pageRequest).getContent();
+        List<Movie> movies = movieRepository.findAll(pageRequest).getContent();
+        if(movies.size() > 0) {
+            return movies;
+        }
+        WebserviceFilmApplication.log.error("{} does not exist" , page);
+        throw new PageNotExistException();
     }
 
     @Scheduled(cron = "0 0 0/3 * * *")
     private void getMovie() {
-        WebserviceFilmApplication.log.error("Scheduled start");
+        WebserviceFilmApplication.log.info("Scheduled start");
         int finalPage = 5;
         boolean isNewMoviesPage = true;
         for (int i = 1; i <= finalPage; i++) {
@@ -62,6 +68,6 @@ public class MovieServiceImpl implements MovieService {
                 }
             }
         }
-        WebserviceFilmApplication.log.error("Scheduled end");
+        WebserviceFilmApplication.log.info("Scheduled end");
     }
 }

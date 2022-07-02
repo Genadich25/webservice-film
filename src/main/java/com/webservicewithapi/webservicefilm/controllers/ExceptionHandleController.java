@@ -3,6 +3,7 @@ package com.webservicewithapi.webservicefilm.controllers;
 import com.webservicewithapi.webservicefilm.exceptions.BadRequestException;
 import com.webservicewithapi.webservicefilm.exceptions.EmptyIsFavoritesSetException;
 import com.webservicewithapi.webservicefilm.exceptions.NotValidEmailOrUsernameException;
+import com.webservicewithapi.webservicefilm.exceptions.PageNotExistException;
 import com.webservicewithapi.webservicefilm.models.Error;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -64,7 +65,7 @@ public class ExceptionHandleController {
         return ResponseEntity.status(status).body(error);
     }
 
-    @ExceptionHandler({NotFoundException.class, EmptyResultDataAccessException.class, EmptyIsFavoritesSetException.class, NoSuchElementException.class})
+    @ExceptionHandler({PageNotExistException.class, NotFoundException.class, EmptyResultDataAccessException.class, EmptyIsFavoritesSetException.class, NoSuchElementException.class})
     public ResponseEntity<Error> handleNotFound(Exception ex)  {
         HttpStatus status = HttpStatus.NOT_FOUND;
         Error error = new Error(status);

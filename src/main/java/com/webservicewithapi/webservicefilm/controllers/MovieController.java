@@ -7,6 +7,7 @@ import com.webservicewithapi.webservicefilm.models.User;
 import com.webservicewithapi.webservicefilm.services.FavoritesServiceImpl;
 import com.webservicewithapi.webservicefilm.services.Movie.MovieSearchServiceInMemoryImpl;
 import com.webservicewithapi.webservicefilm.services.Movie.MovieSearchServiceSQLImpl;
+import com.webservicewithapi.webservicefilm.services.Movie.MovieServiceImpl;
 import com.webservicewithapi.webservicefilm.services.interfaces.MovieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,12 @@ import java.util.Set;
 @RequestMapping(value = "/movie")
 public class MovieController {
 
-    private final MovieService movieService;
+    private final MovieServiceImpl movieService;
     private final FavoritesServiceImpl favoritesService;
     private final MovieSearchServiceSQLImpl searchServiceSQL;
     private final MovieSearchServiceInMemoryImpl searchServiceInMemory;
 
-    public MovieController(MovieService movieService,
+    public MovieController(MovieServiceImpl movieService,
                            FavoritesServiceImpl favoritesService,
                            MovieSearchServiceSQLImpl searchServiceSQL,
                            MovieSearchServiceInMemoryImpl searchServiceInMemory) {
